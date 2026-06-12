@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>FG World Cup AI Easy V9</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css?v=easy-v1"/>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div>
+      <p class="eyebrow">FG World Cup AI</p>
+      <h1>Easy V9</h1>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="dashboard">Dashboard</button>
+    <button class="tab" data-tab="analysis">Analisi</button>
+    <button class="tab" data-tab="fantaeasy">Fanta</button>
+    <button class="tab" data-tab="manage">Gestione</button>
+  </nav>
+
+  <main>
+    <section id="dashboard" class="screen active">
+      <div class="hero">
+        <span class="badge">EASY</span>
+        <h2>Dashboard</h2>
+        <p>La lettura rapida: pick, affidabilita, rischio e miglior nome fanta senza dover girare mille pagine.</p>
+      </div>
+      <div class="filters">
+        <input id="search" placeholder="Cerca squadra o partita">
+        <select id="stageFilter"><option value="">Tutte le fasi</option></select>
+        <select id="groupFilter"><option value="">Tutti i gironi</option></select>
+      </div>
+      <div class="kpis">
+        <div class="kpi"><span>Partite visibili</span><strong id="kpiVisible">0</strong></div>
+        <div class="kpi"><span>Pick migliore</span><strong id="kpiSafe">-</strong></div>
+        <div class="kpi"><span>Top Fanta</span><strong id="kpiBonus">-</strong></div>
+        <div class="kpi"><span>Giocatori DB</span><strong id="kpiPlayers">0</strong></div>
+      </div>
+      <div id="allCards" class="cards"></div>
+    </section>
+
+    <section id="analysis" class="screen">
+      <div class="sectionHead easyHead">
+        <h2>Analisi Partite</h2>
+        <p>Qui trovi solo quello che cambia davvero la lettura: tattica, trappole, margine e red flag.</p>
+        <div class="kpis">
+          <div class="kpi"><span>Letture forti</span><strong id="easyStrong">0</strong></div>
+          <div class="kpi"><span>Trappole</span><strong id="easyTrap">0</strong></div>
+          <div class="kpi"><span>Caos</span><strong id="easyChaos">0</strong></div>
+          <div class="kpi"><span>Da evitare</span><strong id="easyAvoid">0</strong></div>
+        </div>
+        <div class="filters">
+          <input id="analysisSearch" placeholder="Cerca squadra o partita">
+          <select id="analysisFilter">
+            <option value="">Tutte</option>
+            <option value="strong">Forti</option>
+            <option value="trap">Trappole</option>
+            <option value="chaos">Caos</option>
+            <option value="avoid">Da evitare</option>
+            <option value="mismatch">Mismatch tattici</option>
+          </select>
+        </div>
+      </div>
+      <div id="analysisCards" class="cards"></div>
+    </section>
+
+    <section id="fantaeasy" class="screen">
+      <div class="sectionHead easyHead">
+        <h2>Fanta</h2>
+        <p>Fantamondiale semplice: goal, porta inviolata solo portieri, malus cartellini e rigori sbagliati.</p>
+        <div class="kpis">
+          <div class="kpi"><span>Top goal</span><strong id="labGoal">-</strong></div>
+          <div class="kpi"><span>Top portiere</span><strong id="labKeeper">-</strong></div>
+          <div class="kpi"><span>Rischio cartellino</span><strong id="labCard">-</strong></div>
+          <div class="kpi"><span>Giocatori letti</span><strong id="labCount">0</strong></div>
+        </div>
+        <div class="filters">
+          <input id="fantaLabSearch" placeholder="Cerca giocatore, squadra o partita">
+          <select id="fantaLabMode">
+            <option value="overall">Top assoluti</option>
+            <option value="goal">Goal</option>
+            <option value="keeper">Portieri</option>
+            <option value="card">Cartellini</option>
+          </select>
+        </div>
+      </div>
+      <div id="fantaLabCards" class="cards"></div>
+    </section>
+
+    <section id="manage" class="screen">
+      <div class="sectionHead easyHead">
+        <h2>Gestione</h2>
+        <p>Database, rose, formazioni e manutenzione: tutto in un posto solo.</p>
+        <div class="actions">
+          <button id="importOfficial">Importa rose ufficiali FIFA</button>
+          <button class="ghost" id="resetBtn">Reset cache + ricalcola</button>
+        </div>
+        <pre id="importLog">Pronto.</pre>
+      </div>
+      <div class="filters">
+        <input id="squadSearch" placeholder="Cerca squadra o giocatore">
+        <input id="lineupSearch" placeholder="Cerca partita">
+      </div>
+      <div id="manageCards" class="cards"></div>
+      <details class="advancedPanel">
+        <summary>XI manuale</summary>
+        <p>Apri solo quando vuoi forzare gli 11 titolari di una partita.</p>
+        <button class="ghost" id="loadManualXi">Carica XI manuale</button>
+        <div id="manualXiCards" class="cards"></div>
+      </details>
+      <details class="advancedPanel">
+        <summary>Precisione</summary>
+        <div class="kpis">
+          <div class="kpi"><span>Risultati</span><strong id="btCount">0</strong></div>
+          <div class="kpi"><span>Accuratezza 1X2</span><strong id="btAccuracy">-</strong></div>
+          <div class="kpi"><span>Brier 1X2</span><strong id="btBrier">-</strong></div>
+          <div class="kpi"><span>Errore Goal</span><strong id="btGoalMae">-</strong></div>
+        </div>
+        <div class="grid">
+          <div class="item"><span>Fattore gol casa</span><strong id="calHome">1.00</strong></div>
+          <div class="item"><span>Fattore gol trasferta</span><strong id="calAway">1.00</strong></div>
+          <div class="item full"><button id="calibrateBtn">Calibra modello</button><button class="ghost" id="resetCalibrationBtn">Reset calibrazione</button></div>
+        </div>
+        <div id="precisionCards" class="cards"></div>
+      </details>
+    </section>
+
+    <section id="ultimate" class="screen legacyHost">
+      <strong id="ultimatePick"></strong><strong id="ultimateRed"></strong><strong id="ultimateFanta"></strong><strong id="ultimateReliability"></strong>
+      <div id="ultimateCards"></div><input id="ultimateSearch"><select id="ultimateFilter"></select>
+    </section>
+    <section id="today" class="screen legacyHost"></section>
+    <section id="oracle" class="screen legacyHost"><div id="oracleCards"></div><input id="oracleSearch"><select id="oracleFilter"></select></section>
+    <section id="tactics" class="screen legacyHost"><div id="tacticalCards"></div><input id="tacticalSearch"><select id="tacticalFilter"></select><strong id="tacticalMismatch"></strong><strong id="tacticalFragile"></strong><strong id="tacticalOpen"></strong><strong id="tacticalLocked"></strong></section>
+    <section id="redflags" class="screen legacyHost"><div id="redFlagCards"></div><input id="redFlagSearch"><select id="redFlagFilter"></select><strong id="redTrap"></strong><strong id="redLowMargin"></strong><strong id="redChaos"></strong><strong id="redAvoid"></strong></section>
+    <section id="fantalab" class="screen legacyHost"></section>
+    <section id="scenarios" class="screen legacyHost"><div id="scenarioCards"></div><input id="scenarioSearch"><strong id="scenarioManual"></strong><strong id="scenarioSensitive"></strong><strong id="scenarioAbsences"></strong><strong id="scenarioModel"></strong></section>
+    <section id="database" class="screen legacyHost"></section>
+    <section id="money" class="screen legacyHost"><div id="moneyCards"></div></section>
+    <section id="fantasy" class="screen legacyHost"><div id="fantasyCards"></div></section>
+    <section id="squads" class="screen legacyHost"><div id="squadCards"></div></section>
+    <section id="montecarlo" class="screen legacyHost"><div id="mcCards"></div></section>
+    <section id="official" class="screen legacyHost"><div id="officialCards"></div><button id="updateOfficialVisible">Aggiorna prime 8 visibili</button></section>
+    <section id="manualxi" class="screen legacyHost"></section>
+    <section id="lineups" class="screen legacyHost"><div id="lineupCards"></div></section>
+    <section id="best" class="screen legacyHost"><div id="bestCards"></div></section>
+  </main>
+</div>
+
+<div id="modal" class="modal" hidden>
+  <div class="modalBox">
+    <button id="closeModal" class="ghost">Chiudi</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script src="data.js?v=easy-v1"></script>
+<script src="app.js?v=easy-v1"></script>
+</body>
+</html>

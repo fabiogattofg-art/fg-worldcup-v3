@@ -1,0 +1,9 @@
+{
+  "name": "FG World Cup AI Easy V9.2",
+  "short_name": "FG WC V9.2",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#090b10",
+  "theme_color": "#090b10",
+  "icons": []
+}
